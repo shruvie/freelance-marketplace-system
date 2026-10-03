@@ -51,7 +51,7 @@ export const api = {
       return res.json();
     },
     me: async () => {
-      const res = await fetch(`${API_URL}/auth/me`, {
+      const res = await fetch(`${API_URL}/users/me`, {
         headers: getHeaders()
       });
       if (!res.ok) throw new Error('Not authenticated');

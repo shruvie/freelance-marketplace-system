@@ -76,8 +76,12 @@ export default function Navbar() {
               </button>
               
               <Link href="/profile">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 border-2 border-transparent hover:border-emerald-300 transition-all cursor-pointer">
-                  <User className="w-5 h-5" />
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 border-2 border-transparent hover:border-emerald-300 transition-all cursor-pointer overflow-hidden">
+                  {user.profile?.profile_image ? (
+                    <img src={user.profile.profile_image} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-5 h-5" />
+                  )}
                 </motion.div>
               </Link>
               

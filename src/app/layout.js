@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LayoutWrapper from "@/components/LayoutWrapper";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} h-full antialiased font-sans`}
     >
       <body className="min-h-full flex flex-col bg-white text-gray-900">
+        <Toaster position="bottom-left" />
         <LayoutWrapper>
           {children}
         </LayoutWrapper>

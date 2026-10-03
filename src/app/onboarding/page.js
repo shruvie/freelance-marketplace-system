@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Camera, Upload, Briefcase, MapPin, DollarSign, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api';
+import toast from 'react-hot-toast';
 
 export default function Onboarding() {
   const [loading, setLoading] = useState(false);
@@ -23,42 +25,73 @@ export default function Onboarding() {
     e.preventDefault();
     setLoading(true);
     try {
-      // We will add api.users.updateProfile shortly
       await api.users.updateProfile(formData);
-      window.location.href = '/projects'; // Proceed to dashboard
+      toast.success('Profile created successfully!');
+      setTimeout(() => {
+        window.location.href = '/projects'; // Proceed to dashboard
+      }, 1000);
     } catch (err) {
+      toast.error(err.message || 'Failed to save profile');
       console.error(err);
     }
     setLoading(false);
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
-          Complete your profile
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Let's get you set up so you can start {step === 1 ? 'strong' : 'working'}
-        </p>
-      </div>
+  const handleSkip = () => {
+    window.location.href = '/projects';
+  };
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl relative">
-        {/* Progress Bar */}
-        <div className="mb-8 overflow-hidden rounded-full bg-gray-200">
-          <div
-            className="h-2 rounded-full bg-[#34C759] transition-all duration-500 ease-in-out"
-            style={{ width: `${(step / 3) * 100}%` }}
+  return (
+    <div className="h-screen w-screen overflow-hidden bg-white flex">
+      {/* Left Image Section */}
+      <div className="hidden lg:flex lg:w-1/2 p-4">
+        <div className="relative w-full h-full rounded-3xl overflow-hidden bg-emerald-900">
+          <Image
+            src="/login/signup_Screen.jfif"
+            alt="Onboarding Background"
+            fill
+            className="object-cover"
+            priority
           />
         </div>
+      </div>
 
-        <motion.div
-          key={step}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          className="bg-white py-8 px-4 shadow sm:rounded-xl sm:px-10"
-        >
+      {/* Right Form Section */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 xl:px-24 py-12 h-full overflow-y-auto">
+        <div className="max-w-md w-full mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-medium text-gray-900">
+                Complete your profile
+              </h2>
+              <p className="mt-2 text-sm text-gray-500">
+                Let's get you set up so you can start {step === 1 ? 'strong' : 'working'}
+              </p>
+            </div>
+            <button 
+              onClick={handleSkip}
+              className="text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              Skip
+            </button>
+          </div>
+
+        <div className="w-full relative">
+          {/* Progress Bar */}
+          <div className="mb-8 overflow-hidden rounded-full bg-gray-100">
+            <div
+              className="h-1.5 rounded-full bg-[#34C759] transition-all duration-500 ease-in-out"
+              style={{ width: `${(step / 3) * 100}%` }}
+            />
+          </div>
+
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="bg-white py-2"
+          >
           {step === 1 && (
             <div className="space-y-6">
               <div className="text-center">
@@ -101,7 +134,7 @@ export default function Onboarding() {
                     type="text"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-3 border focus:ring-[#34C759] focus:border-[#34C759]"
+                    className="block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-3 border focus:ring-[#34C759] focus:border-[#34C759] text-gray-900 placeholder-gray-400"
                     placeholder="e.g. San Francisco, CA"
                   />
                 </div>
@@ -128,7 +161,7 @@ export default function Onboarding() {
                     type="number"
                     value={formData.experience_years}
                     onChange={(e) => setFormData({ ...formData, experience_years: e.target.value })}
-                    className="block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-3 border focus:ring-[#34C759] focus:border-[#34C759]"
+                    className="block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-3 border focus:ring-[#34C759] focus:border-[#34C759] text-gray-900 placeholder-gray-400"
                     placeholder="e.g. 5"
                   />
                 </div>
@@ -144,7 +177,7 @@ export default function Onboarding() {
                     type="number"
                     value={formData.hourly_rate}
                     onChange={(e) => setFormData({ ...formData, hourly_rate: e.target.value })}
-                    className="block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-3 border focus:ring-[#34C759] focus:border-[#34C759]"
+                    className="block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-3 border focus:ring-[#34C759] focus:border-[#34C759] text-gray-900 placeholder-gray-400"
                     placeholder="e.g. 50"
                   />
                 </div>
@@ -176,7 +209,7 @@ export default function Onboarding() {
                     rows={4}
                     value={formData.bio}
                     onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    className="block w-full sm:text-sm border-gray-300 rounded-md py-3 px-3 border focus:ring-[#34C759] focus:border-[#34C759]"
+                    className="block w-full sm:text-sm border-gray-300 rounded-md py-3 px-3 border focus:ring-[#34C759] focus:border-[#34C759] text-gray-900 placeholder-gray-400"
                     placeholder="Tell clients about your skills and link your portfolio..."
                   />
                 </div>
@@ -200,7 +233,9 @@ export default function Onboarding() {
               </div>
             </div>
           )}
-        </motion.div>
+          </motion.div>
+        </div>
+        </div>
       </div>
     </div>
   );

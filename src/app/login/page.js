@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { api } from '@/lib/api';
 import { Eye, EyeOff } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import { useGoogleLogin } from '@react-oauth/google';
 
@@ -26,13 +27,18 @@ export default function Login() {
       try {
         const data = await api.auth.googleLogin(tokenResponse.access_token, activeRole.toLowerCase());
         localStorage.setItem('token', data.access_token);
-        window.location.href = '/projects';
+        toast.success('Signed in successfully!');
+        setTimeout(() => {
+          window.location.href = '/projects';
+        }, 1000);
       } catch (err) {
+        toast.error(err.message || 'Google login failed');
         setError(err.message);
       }
       setLoading(false);
     },
     onError: () => {
+      toast.error('Google login failed');
       setError('Google login failed');
     },
   });
@@ -44,9 +50,13 @@ export default function Login() {
     try {
       const data = await api.auth.login(email, password);
       localStorage.setItem('token', data.access_token);
+      toast.success('Signed in successfully!');
       // Route based on role if needed, or default
-      window.location.href = '/projects';
+      setTimeout(() => {
+        window.location.href = '/projects';
+      }, 1000);
     } catch (err) {
+      toast.error(err.message || 'Login failed');
       setError(err.message);
     }
     setLoading(false);
@@ -116,7 +126,7 @@ export default function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full py-2 border-b border-gray-300 focus:border-emerald-500 bg-transparent transition-all sm:text-sm outline-none"
+                className="block w-full py-2 border-b border-gray-300 focus:border-emerald-500 bg-transparent transition-all sm:text-sm outline-none text-gray-900 placeholder-gray-400"
                 placeholder="you@example.com"
               />
             </div>
@@ -131,7 +141,7 @@ export default function Login() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full py-2 border-b border-gray-300 focus:border-emerald-500 bg-transparent transition-all sm:text-sm outline-none pr-10"
+                  className="block w-full py-2 border-b border-gray-300 focus:border-emerald-500 bg-transparent transition-all sm:text-sm outline-none pr-10 text-gray-900 placeholder-gray-400"
                   placeholder="••••••••"
                 />
                 <button

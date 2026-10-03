@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { api } from '@/lib/api';
 import { Eye, EyeOff } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import { useGoogleLogin } from '@react-oauth/google';
 
@@ -30,13 +31,18 @@ export default function Register() {
       try {
         const data = await api.auth.googleLogin(tokenResponse.access_token, role);
         localStorage.setItem('token', data.access_token);
-        window.location.href = '/onboarding';
+        toast.success('Signed in successfully!');
+        setTimeout(() => {
+          window.location.href = '/onboarding';
+        }, 1000);
       } catch (err) {
+        toast.error(err.message || 'Google login failed');
         setError(err.message);
       }
       setLoading(false);
     },
     onError: () => {
+      toast.error('Google login failed');
       setError('Google login failed');
     },
   });
@@ -51,10 +57,14 @@ export default function Register() {
       // 2. Automatically log them in so we have a token
       const data = await api.auth.login(email, password);
       localStorage.setItem('token', data.access_token);
-
+      
+      toast.success('Account created successfully!');
       // 3. Send them to the onboarding screen
-      window.location.href = '/onboarding';
+      setTimeout(() => {
+        window.location.href = '/onboarding';
+      }, 1000);
     } catch (err) {
+      toast.error(err.message || 'Registration failed');
       setError(err.message);
     }
     setLoading(false);
@@ -125,7 +135,7 @@ export default function Register() {
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="block w-full py-2 border-b border-gray-300 focus:border-[#34C759] bg-transparent transition-all sm:text-sm outline-none"
+                  className="block w-full py-2 border-b border-gray-300 focus:border-[#34C759] bg-transparent transition-all sm:text-sm outline-none text-gray-900 placeholder-gray-400"
                   placeholder="John Doe"
                 />
               </div>
@@ -139,7 +149,7 @@ export default function Register() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full py-2 border-b border-gray-300 focus:border-[#34C759] bg-transparent transition-all sm:text-sm outline-none"
+                  className="block w-full py-2 border-b border-gray-300 focus:border-[#34C759] bg-transparent transition-all sm:text-sm outline-none text-gray-900 placeholder-gray-400"
                   placeholder="you@example.com"
                 />
               </div>
@@ -155,7 +165,7 @@ export default function Register() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full py-2 border-b border-gray-300 focus:border-[#34C759] bg-transparent transition-all sm:text-sm outline-none pr-10"
+                  className="block w-full py-2 border-b border-gray-300 focus:border-[#34C759] bg-transparent transition-all sm:text-sm outline-none pr-10 text-gray-900 placeholder-gray-400"
                   placeholder="••••••••"
                 />
                 <button
