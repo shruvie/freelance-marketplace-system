@@ -57,5 +57,31 @@ export const api = {
       if (!res.ok) throw new Error('Not authenticated');
       return res.json();
     }
+  },
+  users: {
+    updateProfile: async (data) => {
+      const formData = new FormData();
+      if (data.bio) formData.append('bio', data.bio);
+      if (data.location) formData.append('location', data.location);
+      if (data.hourly_rate) formData.append('hourly_rate', data.hourly_rate);
+      if (data.experience_years) formData.append('experience_years', data.experience_years);
+      if (data.profile_picture) formData.append('profile_picture', data.profile_picture);
+
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+      
+      const res = await fetch(`${API_URL}/users/profile`, {
+        method: 'PUT',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+          // Note: DO NOT set Content-Type here, let browser set multipart/form-data with boundaries
+        },
+        body: formData
+      });
+      if (!res.ok) {
+        const error = await res.json().catch(() => ({}));
+        throw new Error(error.detail || 'Failed to update profile');
+      }
+      return res.json();
+    }
   }
 };

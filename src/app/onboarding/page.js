@@ -24,7 +24,7 @@ export default function Onboarding() {
     setLoading(true);
     try {
       // We will add api.users.updateProfile shortly
-      // await api.users.updateProfile(formData);
+      await api.users.updateProfile(formData);
       window.location.href = '/projects'; // Proceed to dashboard
     } catch (err) {
       console.error(err);
@@ -62,12 +62,33 @@ export default function Onboarding() {
           {step === 1 && (
             <div className="space-y-6">
               <div className="text-center">
-                <div className="mx-auto h-32 w-32 rounded-full border-4 border-dashed border-gray-200 flex items-center justify-center bg-gray-50 relative overflow-hidden group cursor-pointer hover:border-[#34C759] transition-colors">
-                  <div className="flex flex-col items-center justify-center text-gray-500 group-hover:text-[#34C759]">
-                    <Camera className="h-8 w-8 mb-2" />
-                    <span className="text-xs font-semibold">Upload Photo</span>
-                  </div>
-                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id="profile-upload"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const file = e.target.files[0];
+                      // Just preview locally for now, backend upload can happen on submit
+                      const url = URL.createObjectURL(file);
+                      setFormData({ ...formData, profile_picture: file, profile_picture_preview: url });
+                    }
+                  }}
+                />
+                <label 
+                  htmlFor="profile-upload"
+                  className="mx-auto h-32 w-32 rounded-full border-4 border-dashed border-gray-200 flex items-center justify-center bg-gray-50 relative overflow-hidden group cursor-pointer hover:border-[#34C759] transition-colors"
+                >
+                  {formData.profile_picture_preview ? (
+                    <img src={formData.profile_picture_preview} alt="Profile preview" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-gray-500 group-hover:text-[#34C759]">
+                      <Camera className="h-8 w-8 mb-2" />
+                      <span className="text-xs font-semibold">Upload Photo</span>
+                    </div>
+                  )}
+                </label>
               </div>
 
               <div>
