@@ -28,9 +28,17 @@ export default function Login() {
         const data = await api.auth.googleLogin(tokenResponse.access_token, activeRole.toLowerCase());
         localStorage.setItem('token', data.access_token);
         toast.success('Signed in successfully!');
-        setTimeout(() => {
-          window.location.href = '/projects';
-        }, 1000);
+        
+        try {
+          const userData = await api.auth.me();
+          if (userData.role.toLowerCase() === 'client') {
+            window.location.href = '/client/find-freelancers';
+          } else {
+            window.location.href = '/freelancer/find-projects';
+          }
+        } catch (err) {
+          window.location.href = '/onboarding';
+        }
       } catch (err) {
         toast.error(err.message || 'Google login failed');
         setError(err.message);
@@ -51,10 +59,17 @@ export default function Login() {
       const data = await api.auth.login(email, password);
       localStorage.setItem('token', data.access_token);
       toast.success('Signed in successfully!');
-      // Route based on role if needed, or default
-      setTimeout(() => {
-        window.location.href = '/projects';
-      }, 1000);
+      
+      try {
+        const userData = await api.auth.me();
+        if (userData.role.toLowerCase() === 'client') {
+          window.location.href = '/client/find-freelancers';
+        } else {
+          window.location.href = '/freelancer/find-projects';
+        }
+      } catch (err) {
+        window.location.href = '/onboarding';
+      }
     } catch (err) {
       toast.error(err.message || 'Login failed');
       setError(err.message);
