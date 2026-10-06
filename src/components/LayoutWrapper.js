@@ -10,7 +10,7 @@ export default function LayoutWrapper({ children }) {
   const isAuthPage = ['/login', '/register', '/onboarding'].includes(pathname);
 
   return (
-    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "missing_client_id"}>
       {!isAuthPage && <Navbar />}
       <main className="flex-1 h-full">
         {children}
