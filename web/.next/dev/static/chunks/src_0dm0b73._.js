@@ -372,7 +372,7 @@ function LayoutWrapper({ children }) {
         '/onboarding'
     ].includes(pathname);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$react$2d$oauth$2f$google$2f$dist$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["GoogleOAuthProvider"], {
-        clientId: ("TURBOPACK compile-time value", "222430359773-hdjsdeg27k059922el3ul56u9d8i0h2d.apps.googleusercontent.com"),
+        clientId: ("TURBOPACK compile-time value", "222430359773-hdjsdeg27k059922el3ul56u9d8i0h2d.apps.googleusercontent.com") || "missing_client_id",
         children: [
             !isAuthPage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Navbar$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/components/LayoutWrapper.js",
